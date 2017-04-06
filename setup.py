@@ -1,5 +1,6 @@
 import sys
 import MySQLdb
+
 args = sys.argv[1:]
 def main():
 	if args[0] == "--help":
@@ -12,21 +13,34 @@ def main():
 		sys.exit(1)
 
 	if args[0] == '--createdb':
+		cursor = create_connection(args)
 		try:
-			cursor = create_connection(args)
+			cursor.execute("CREATE DATABASE " + args[4] + ";")
 		except:
-			print "Unable to Connect to Database. Please Check Credentials."
-			sys.exit(1)
-		print "Connection Sucessful"
+			print "Unable to create database"
+			print "Exiting ..."
+			sys.exit(-1)
+		print "Database created"
 
 	if args[0] == '--removedb':
-		pass
+		cursor = create_connection(args)
+		try:
+			cursor.execute("DROP DATABASE `" + args[4] + "`;")
+		except:
+			print "Unable to remove database"
+			print "Exiting ..."
+			sys.exit(1)
+		print "Database Removed"
 
 
 def create_connection(args):
-	db = MySQLdb.connect(args[1], args[2], args[3])
-	cursor = db.cursor()
-	print "Cursor Made"
+	try:
+		db = MySQLdb.connect(args[1], args[2], args[3])
+		cursor = db.cursor()
+	except:
+		print "Unable to Connect to Database. Please Check Credentials."
+		sys.exit(1)
+	print "mySQL Connection Sucessful!"
 	return cursor
 
 def create_db(cursor):
