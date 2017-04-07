@@ -65,13 +65,14 @@ def create_tables(cursor, args):
 	try:
 		cursor.execute("USE `{0}`;".format(args[4]))
 		cursor.execute("CREATE TABLE `STUDENTS` (ID INTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id));")
-		cursor.execute("CREATE TABLE `TEACHERS` (ID INTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id));")
+		cursor.execute("CREATE TABLE `STAFF` (ID INTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id));")
+		cursor.execute("CREATE TABLE `CLASSES` (CLASS_NAME TEXT, TEACHER_FIRST TEXT, TEACHER_LAST TEXT);")
 	except:
 		print "ERROR: Creating Tables"
 		print "Reseting Database"
 		remove_database(cursor, args)
 		sys.exit(1)
-	print "Tables: STUDENTS and TEACHERS added"
+	print "Tables: STUDENTS, TEACHERS, CLASSES added"
 
 def create_connection_file(args):
 	print "A connection file will be created with these login credentials. This prevents users from needing to enter credentials on all operations."
