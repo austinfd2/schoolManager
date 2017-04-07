@@ -66,7 +66,7 @@ def create_tables(cursor, args):
 		cursor.execute("USE `{0}`;".format(args[4]))
 		cursor.execute("CREATE TABLE `STUDENTS` (ID INTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id));")
 		cursor.execute("CREATE TABLE `STAFF` (ID INTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id));")
-		cursor.execute("CREATE TABLE `CLASSES` (CLASS_NAME TEXT, TEACHER_FIRST TEXT, TEACHER_LAST TEXT);")
+		cursor.execute("CREATE TABLE `CLASSES` (CLASS_ID INT, CLASS_NAME TEXT, TEACHER_FIRST TEXT, TEACHER_LAST TEXT, PRIMARY KEY (CLASS_ID));")
 	except:
 		print "ERROR: Creating Tables"
 		print "Reseting Database"

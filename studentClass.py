@@ -33,7 +33,35 @@ class Student:
 		class_name = raw_input("What is the name of the Class? \n")
 		sql = "SELECT * FROM CLASSES WHERE CLASS_NAME='{0}';".format(class_name)
 		Student.cursor.execute(sql)
-		print Student.cursor.fetchall()
+		
+		results = Student.cursor.fetchall()
+		print 'Results:' , len(results)
+		print 'Classes Available:'
+		if len(results) == 0:
+			print 'No Classes Found Please Try again'
+			sys.exit(1)
+		for row in results:
+			print '(' + str(row[0]) + ')' , row[1] , ':', row[2], row[3]
+		class_id = raw_input("Please Enter the Class ID you want to enroll in. \n")
+		found = False
+		for row in results:
+			if row[0] == int(class_id):
+				found = True
+				print 'Enrolling in', row[1], ':', row[2], row[3]
+
+				sql = "INSERT INTO {0}_{1} (STUDENT_FIRST, STUDENT_LAST) VALUES ('{2}', '{3}');"
+				try:
+					print sql.format(row[1],row[0], self.first_name, self.last_name)
+					Student.cursor.execute(sql.format(row[1],row[0], self.first_name, self.last_name))
+					Student.db.commit()
+				except:
+					print "Unable to enroll in class"
+					sys.exit(1)
+		if not found:
+			print "Invalid Class ID"
+		print "Sucessfully Enrolled"
+
+
 
 		
 

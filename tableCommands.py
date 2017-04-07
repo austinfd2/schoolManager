@@ -21,4 +21,8 @@ if arg[0] == "--enroll":
 	student = Student(arg[1], arg[2])
 	student.enroll()
 
+if arg[0] == "--setGrade":
+	teacher = Teacher(arg[1], arg[2])
+	teacher.set_grade()
+
 
