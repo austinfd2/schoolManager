@@ -14,6 +14,7 @@ class Student:
 		self.first_name = first_name
 		self.last_name = last_name
 		self.id = Student.student_id + 1
+		print "Student: ", self.first_name, self.last_name
 
 	def display_student(self):
 		print 'Id :' , self.id, ", Name :", self.first_name, self.last_name
@@ -26,8 +27,15 @@ class Student:
 			print "Success: Student", self.first_name, self.last_name, "Created"
 		else:
 			print "Error"
-		
 		Student.db.close()
+
+	def enroll(self):
+		class_name = raw_input("What is the name of the Class? \n")
+		sql = "SELECT * FROM CLASSES WHERE CLASS_NAME='{0}';".format(class_name)
+		Student.cursor.execute(sql)
+		print Student.cursor.fetchall()
+
+		
 
 
 
