@@ -1,0 +1,4 @@
+ADDR=localhost 
+USERNAME=root 
+PASSWORD=Faulkner7 
+DATABASE=School 
