@@ -15,20 +15,16 @@ def main():
 
 	if args[0] == '--createdb':
 		cursor = create_connection(args)
-		create_db(cursor)
-		create_tables(cursor)
+		create_db(cursor, args)
+		create_tables(cursor, args)
 
-		print "Database created"
 
 	elif args[0] == '--removedb':
 		cursor = create_connection(args)
-		try:
-			cursor.execute("DROP DATABASE `" + args[4] + "`;")
-		except:
-			print "Unable to remove database"
-			print "Exiting ..."
-			sys.exit(1)
-		print "Database Removed"
+		remove_database(cursor, args)
+
+	elif args[0] == '--createconfig':
+		create_connection_file(args)
 
 	else:
 		print "Unknown Command"
@@ -46,19 +42,48 @@ def create_connection(args):
 	print "mySQL Connection Sucessful!"
 	return cursor
 
-def create_db(cursor):
+def create_db(cursor, args):
 	try:
 		cursor.execute("CREATE DATABASE " + args[4] + ";")
 	except:
 		print "Unable to create database"
 		print "Exiting ..."
 		sys.exit(-1)
+	print "Database Created!"
 
-def create_tables(cursor):
+def remove_database(cursor, args):
 	try:
-		cursor.execute("""CREATE TABLE `STUDENTS` (ID PRIMARYINTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id)""")
-		cursor.execute("""CREATE TABLE `TEACHERS` (ID PRIMARYINTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id)""")
-	except
+		cursor.execute("DROP DATABASE `" + args[4] + "`;")
+	except:
+		print "Unable to remove database"
+		print "Exiting ..."
+		sys.exit(1)
+	print "Database Removed"
+
+
+def create_tables(cursor, args):
+	try:
+		print "USE `{0}`".format(args[4])
+		cursor.execute("USE `{0}`;".format(args[4]))
+		cursor.execute("CREATE TABLE `STUDENTS` (ID INTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id));")
+		cursor.execute("CREATE TABLE `TEACHERS` (ID INTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id));")
+	except:
+		print "ERROR: Creating Tables"
+		print "Reseting Database"
+		remove_database(cursor, args)
+		sys.exit(1)
+	print "Tables: STUDENTS and TEACHERS added"
+
+def create_connection_file(args):
+	print "A connection file will be created with these login credentials. This prevents users from needing to enter credentials on all operations."
+	f = open(".creds.txt", "w")
+	f.write("ADDR={0} \n".format(args[1]))
+	f.write("USERNAME={0} \n".format(args[2]))
+	f.write("PASSWORD={0} \n".format(args[3]))
+	f.write("DATABASE={0} \n".format(args[4]))
+	f.close()
+
+
 
 
 
