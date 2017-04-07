@@ -5,6 +5,7 @@ args = sys.argv[1:]
 def main():
 	if args[0] == "--help":
 		print "Format Expected: setup.py [-createdb][-removedb] db_address admin_username admin_password db_name"						
+		print "Please Provide login for accounts that have admin privledges"
 		sys.exit(1)
 
 	if len(args) != 5:
@@ -55,6 +56,8 @@ def check_db_connection(cursor):
 		return True
 	else:
 		return False  
+
+
 
 if __name__ == '__main__':
 	main()
