@@ -1,16 +1,13 @@
 import MySQLdb
 import sys
-#open database connection
+import re
+from globalFunctionRepo import create_connection_from_file
 
-
-
-db = MySQLdb.connect("localhost", "root", "Faulkner7", "db")
-
-#prepare a cursor object 
-cursor = db.cursor()
 
 
 class Student:
+	db = create_connection_from_file()
+	cursor = db.cursor()
 	#base class for all students
 	student_id = cursor.execute("SELECT * FROM STUDENTS;")
 	def __init__(self, first_name, last_name):
@@ -23,14 +20,14 @@ class Student:
 
 	def add_student_to_db(self):
 		sqlstring = """INSERT INTO STUDENTS (ID, FIRST, LAST) VALUES ({0},'{1}','{2}');"""
-		result = cursor.execute(sqlstring.format(self.id,self.first_name,self.last_name))
+		result = Student.cursor.execute(sqlstring.format(self.id,self.first_name,self.last_name))
+		Student.db.commit()
 		if result:
 			print "Success: Student", self.first_name, self.last_name, "Created"
 		else:
 			print "Error"
-		db.commit()
-		db.close()
-
+		
+		Student.db.close()
 
 
 
