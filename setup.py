@@ -63,7 +63,6 @@ def remove_database(cursor, args):
 
 def create_tables(cursor, args):
 	try:
-		print "USE `{0}`".format(args[4])
 		cursor.execute("USE `{0}`;".format(args[4]))
 		cursor.execute("CREATE TABLE `STUDENTS` (ID INTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id));")
 		cursor.execute("CREATE TABLE `TEACHERS` (ID INTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id));")
@@ -80,7 +79,7 @@ def create_connection_file(args):
 	f.write("ADDR={0} \n".format(args[1]))
 	f.write("USERNAME={0} \n".format(args[2]))
 	f.write("PASSWORD={0} \n".format(args[3]))
-	f.write("DATABASE={0} \n".format(args[4]))
+	f.write("DATABASE={0}".format(args[4]))
 	f.close()
 
 
