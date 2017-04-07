@@ -15,15 +15,12 @@ def main():
 
 	if args[0] == '--createdb':
 		cursor = create_connection(args)
-		try:
-			cursor.execute("CREATE DATABASE " + args[4] + ";")
-		except:
-			print "Unable to create database"
-			print "Exiting ..."
-			sys.exit(-1)
+		create_db(cursor)
+		create_tables(cursor)
+
 		print "Database created"
 
-	if args[0] == '--removedb':
+	elif args[0] == '--removedb':
 		cursor = create_connection(args)
 		try:
 			cursor.execute("DROP DATABASE `" + args[4] + "`;")
@@ -33,8 +30,13 @@ def main():
 			sys.exit(1)
 		print "Database Removed"
 
+	else:
+		print "Unknown Command"
+		sys.exit(1)
+
 
 def create_connection(args):
+	# Creates a connection to desired Db
 	try:
 		db = MySQLdb.connect(args[1], args[2], args[3])
 		cursor = db.cursor()
@@ -45,17 +47,18 @@ def create_connection(args):
 	return cursor
 
 def create_db(cursor):
-	pass
+	try:
+		cursor.execute("CREATE DATABASE " + args[4] + ";")
+	except:
+		print "Unable to create database"
+		print "Exiting ..."
+		sys.exit(-1)
 
-def check_db_connection(cursor):
-	cursor.execute("SELECT VERSION()")
-	results = cursor.fetchone()
-	print results
-	# Check if anything at all is returned
-	if results:
-		return True
-	else:
-		return False  
+def create_tables(cursor):
+	try:
+		cursor.execute("""CREATE TABLE `STUDENTS` (ID PRIMARYINTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id)""")
+		cursor.execute("""CREATE TABLE `TEACHERS` (ID PRIMARYINTEGER, FIRST TEXT, LAST TEXT, PRIMARY KEY (id)""")
+	except
 
 
 
